@@ -8,7 +8,14 @@ export default class App extends React.Component {
   state={
     todos:[],
     error:'',
+    name:'',
   }
+
+  onNameChange = evt => {
+    const { value } = evt.target
+    this.setState({ ...this.state, name: value})
+  }
+
 fetchAllTodos= () => {
   axios.get(URL)
   .then(res => {
@@ -32,8 +39,10 @@ this.fetchAllTodos()
           })}
         </div>
         <form id="todoForm">
-
-        </form>
+        <input value={this.state.name} onChange={this.onNameChange} type="text" placeholder="Input Todo"></input>
+        <input type="submit"></input>
+        <button>Clear Completed</button>     
+      </form>
       </div>
     )
   }
