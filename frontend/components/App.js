@@ -7,6 +7,7 @@ const URL = 'http://localhost:9000/api/todos'
 export default class App extends React.Component {
   state={
     todos:[],
+    error:'',
   }
 fetchAllTodos= () => {
   axios.get(URL)
@@ -14,7 +15,7 @@ fetchAllTodos= () => {
     this.setState({... this.state, todos: res.data.data})
   })
   .catch(err => {
-    debugger
+    this.setState({ ...this.state, error: err.response.data.message})
   })
 }
   componentDidMount() {
@@ -23,7 +24,7 @@ this.fetchAllTodos()
   render() {
     return (
       <div>
-        <div id="errors">Error: No error here</div>
+        <div id="errors">Error:{this.state.error} </div>
         <div id="todos">
           <h2>Todos:</h2>
           {this.state.todos.map(td => {
