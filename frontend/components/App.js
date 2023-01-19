@@ -25,6 +25,23 @@ fetchAllTodos= () => {
     this.setState({ ...this.state, error: err.response.data.message})
   })
 }
+
+postNewTodo = () => {
+  axios.post(URL, {name: this.state.name})
+  .then(res=> {
+    this.fetchAllTodos()
+    this.setState({...this.state, name:''})
+  })
+  .catch(err => {
+    debugger
+  })
+}
+onSubmit = evt => {
+  evt.preventDefault()
+  this.postNewTodo()
+
+}
+
   componentDidMount() {
 this.fetchAllTodos()
   }
@@ -38,7 +55,7 @@ this.fetchAllTodos()
             return <div key={td.id}>{td.name} </div>
           })}
         </div>
-        <form id="todoForm">
+        <form id="todoForm" onSubmit={this.onSubmit}>
         <input value={this.state.name} onChange={this.onNameChange} type="text" placeholder="Input Todo"></input>
         <input type="submit"></input>
         <button>Clear Completed</button>     
