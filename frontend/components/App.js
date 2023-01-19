@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Form from './Form';
 
 const URL = 'http://localhost:9000/api/todos'
 
@@ -9,7 +10,7 @@ export default class App extends React.Component {
     todos: [],
     error: '',
     name: '',
-    displayCompleteds: false
+    displayCompleteds: true,
   }
 
   setAxiosResponseError = err => this.setState({ ...this.state, error: err.respnse.data.message })
@@ -45,7 +46,7 @@ export default class App extends React.Component {
       .catch(this.setAxiosResponseError)
   }
 
-  toggleComplete = id => evt => {
+  toggleComplete = id => () => {
     axios.patch(`${URL}/${id}`)
       .then(res => {
         this.setState({
@@ -65,7 +66,7 @@ export default class App extends React.Component {
   }
 
   removeCompleted = () => {
-    this.setState({ ...this.state, displayCompleteds: !this.state.displayComplteds })
+    this.setState({ ...this.state, displayCompleteds: !this.state.displayCompleteds})
   }
 
 
@@ -88,12 +89,14 @@ export default class App extends React.Component {
            // 
           }
         </div>
-        <form id="todoForm" onSubmit={this.onSubmit}>
-          <input value={this.state.name} onChange={this.onNameChange} type="text" placeholder="Input Todo"></input>
-          <input type="submit"></input>
+        <Form
+onSubmit={this.onSubmit}
+onNameChange={this.onNameChange}
+removeCompleted={this.removeCompleted}
+name={this.state.name}
+displayCompleteds={this.state.displayCompleteds}
 
-        </form>
-        <button onClick={this.removeCompleted}>{this.state.displayCompleteds ? 'Hide' : 'Show'}Clear Completed</button>
+/>
       </div>
     )
   }
